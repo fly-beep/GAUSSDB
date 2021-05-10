@@ -40,12 +40,12 @@ for MAX in range(0, 5):
          'L_COMMITDATE', 'L_RECEIPTDATE', 'L_SHIPINSTRUCT', 'L_SHIPMODE', 'L_COMMENT']
 
 
-    m = [int(lambd * np.exp(-lambd * 5) + 5), int(lambd * np.exp(-lambd * 9) + 9),
-         int(lambd * np.exp(-lambd * 4) + 4), int(lambd * np.exp(-lambd * 4) + 4),
-         int(lambd * np.exp(-lambd * 1) + 1), int(lambd * np.exp(-lambd * 1) + 1),
-         int(lambd * np.exp(-lambd * 19) + 19), int(lambd * np.exp(-lambd * 19) + 19),
-         int(lambd * np.exp(-lambd * 19) + 19), int(lambd * np.exp(-lambd * 17) + 17),
-         int(lambd * np.exp(-lambd * 7) + 7), int(lambd * np.exp(-lambd * 44) + 44)]
+    m = [int(random.expovariate(5) + 5), int(random.expovariate(9) + 9),
+         int(random.expovariate(4) + 4), int(random.expovariate(4) + 4),
+         int(random.expovariate(1) + 1), int(random.expovariate(1) + 1),
+         int(random.expovariate(19) + 19), int(random.expovariate(19) + 19),
+         int(random.expovariate(19) + 19), int(random.expovariate(17) + 17),
+         int(random.expovariate(7) + 7), int(random.expovariate(44) + 44)]
     p = ['varchar', 'char']
 
     for i in range(u):
@@ -55,8 +55,6 @@ for MAX in range(0, 5):
     numOfFixedLengthField = 0
     numOfVarLengthField = 0
 
-    # TODO 键字段也需考虑随机生成长度和定长/变长 参考：https://wenku.baidu.com/view/d90f0578a26925c52cc5bfb3?ivk_sa=1023194j&bfetype=new
-    # sql
     sql = 'CREATE TABLE test(L_ORDERKEY varchar(20),L_PARTKEY varchar(20),L_SUPPKEY varchar(20),L_LINENUMBER varchar(' \
           '20) '
     for i in b:
@@ -72,7 +70,7 @@ for MAX in range(0, 5):
     print(numOfVarLengthField)
     print(numOfFixedLengthField)
 
-    # TODO (0, 10000)范围的选择依据？
+
     sql4 = "explain analyze SELECT * FROM test where L_ORDERKEY=" + str(random.randint(0, 10000))
     sql5 = "SELECT * FROM test where L_ORDERKEY=" + str(random.randint(0, 10000))
 
@@ -112,23 +110,21 @@ for MAX in range(0, 5):
             insert[ins] = a
             ins += 1
 
-        # TODO 未记录返回的行数 该信息需写进输出文件里的第五列
-        # TODO 之前未考虑到的一个问题 每次点查询结果行数可能不一样 需产生多条记录
-        select = [0] * 500
+        select = [0] * 100
+        numOfRowss = [0] * 100
         ins = 0
-        for i in range(0, 500):
+        for i in range(0, 100):
             b = ""
             si = random.randint(0, 10000)
-            sql4 = "explain analyze SELECT * FROM test where L_ORDERKEY=" + str(random.randint(0, 10000))
-            sql5 = "SELECT * FROM test where L_ORDERKEY=" + str(random.randint(0, 10000))
+            sql4 = "explain analyze SELECT * FROM test where L_ORDERKEY=" + str(si)
+            sql5 = "SELECT * FROM test where L_ORDERKEY=" + str(si)
             rows = crsr.execute(sql5)
             for item in rows:
-                numOfRows += 1 
+                numOfRowss[i] += 1 
             rows = crsr.execute(sql4)
             for j in rows:
                 b = b + str(j)
             
-
             b = b[b.index("Total runtime: ") + len("Total runtime: "): b.index(" ms")]
             print(b)
             select[ins] = b
@@ -150,11 +146,8 @@ for MAX in range(0, 5):
     with open(file, "a+", newline='') as csvFile:
         writer = csv.writer(csvFile, delimiter=',')
         sum = 0.0
-        for i in range(0, 500):
-            sum += float(select[i])
-        b = str(sum / 500)
-        writer.writerow([keyFieldSize, nonKeyFieldSize, numOfFixedLengthField, numOfVarLengthField, numOfRows, b])
-        numOfRows = 0
+        for i in range(0, 100):
+            writer.writerow([keyFieldSize, nonKeyFieldSize, numOfFixedLengthField, numOfVarLengthField, str(numOfRowss[i]), str(float(select[i]))])
     csvFile.close()
 
 crsr.commit()
