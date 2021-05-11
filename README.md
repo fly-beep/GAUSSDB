@@ -41,4 +41,4 @@
 
 (1).先运行test_partition.py，产生12个数据分区（均匀分布）
 
-(2).接下来运行row.py和colomn.py，产生rows_insert.csv、rows_select.csv、cols_insert.csv、cols_select.csv。
+(2).接下来运行row.py和colomn.py，产生rows_insert.csv、rows_select.csv、cols_insert.csv、cols_select.csv
