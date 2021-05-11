@@ -7,14 +7,14 @@ import numpy as np
 cnxn = pyodbc.connect('DRIVER={GaussMPP};SERVER=localhost;PORT=26000;DATABASE=postgres;UID=omm;PWD=gauss@333')
 crsr = cnxn.cursor()
 
-file = "rows_insert.csv"
+file = "cols_insert.csv"
 with open(file, "w", newline='') as csvFile:
     writer = csv.writer(csvFile, delimiter=',')
     writer.writerow(
         ['keyFieldSize', 'nonKeyFieldSize', 'numOfFixedLengthField', 'numOfVarLengthField', 'numOfRows', 'timePerRow'])
 csvFile.close()
 
-file = "rows_select.csv"
+file = "cols_select.csv"
 with open(file, "w", newline='') as csvFile:
     writer = csv.writer(csvFile, delimiter=',')
     writer.writerow(
@@ -63,7 +63,7 @@ for MAX in range(0, 100):
             numOfVarLengthField += 1
         if t == 1:
             numOfFixedLengthField += 1
-    sql += ')'
+    sql += ') with (orientation=column)'
     print(sql)
 
     print(numOfVarLengthField)
@@ -126,7 +126,7 @@ for MAX in range(0, 100):
             ins += 1
     rcsvFile.close()
 
-    file = "rows_insert.csv"
+    file = "cols_insert.csv"
     with open(file, "a+", newline='') as csvFile:
         writer = csv.writer(csvFile, delimiter=',')
         sum = 0.0
@@ -136,7 +136,7 @@ for MAX in range(0, 100):
         writer.writerow([keyFieldSize, nonKeyFieldSize, numOfFixedLengthField, numOfVarLengthField, 1, a])
     csvFile.close()
 
-    file = "rows_select.csv"
+    file = "cols_select.csv"
     with open(file, "a+", newline='') as csvFile:
         writer = csv.writer(csvFile, delimiter=',')
         sum = 0.0
