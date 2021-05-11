@@ -5,11 +5,11 @@
 
 建表语句：
 
-                        CREATE TABLE LINEITEM ( L_ORDERKEY    INTEGER NOT NULL,
+    CREATE TABLE LINEITEM ( L_ORDERKEY    INTEGER NOT NULL,
 
-                                                L_PARTKEY     INTEGER NOT NULL,
+    L_PARTKEY     INTEGER NOT NULL,
 
-                                                L_SUPPKEY     INTEGER NOT NULL,
+    L_SUPPKEY     INTEGER NOT NULL,
 
                                                 L_LINENUMBER  INTEGER NOT NULL,
 
