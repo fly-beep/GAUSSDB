@@ -165,6 +165,7 @@ if __name__ == '__main__':
                      y[nnum * num * m + 12], y[nnum * num * m + 13], y[nnum * num * m + 14], y[nnum * num * m + 15]])
             csvfile.close()
 
+
     crsr.commit()
     crsr.close()
     cnxn.close()
