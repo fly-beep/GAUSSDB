@@ -1,4 +1,4 @@
-本项目主要基于华为的OpenGuass数据库，使用TPCH数据集的LINEITEM表进行操作。
+本项目主要基于华为的OpenGuass数据库，使用TPCH数据集的LINEITEM表。
 
 
 主要实现了数据分区操作，以及分析Gauss数据库的插入，点查询速度。
